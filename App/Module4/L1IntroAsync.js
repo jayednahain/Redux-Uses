@@ -3,7 +3,7 @@ import React from 'react'
 
 
 import { configureStore ,combineReducers, createStore, applyMiddleware } from '@reduxjs/toolkit'
-import { delayMiddleware } from './L1CustomMiddleWare'
+import { CustomMiddleWare, delayMiddleWare, fetchDataMiddleWare } from './L1CustomMiddleWare'
 
 const initialState = {
     todos: []
@@ -47,12 +47,18 @@ const userReducer = (state = { user: {} }, action) => {
 //store ------------------------------------------------------------------------------
 const rootReducer = combineReducers({todos: todoReducer,users: userReducer})
 
-const store = configureStore({
-    reducer:rootReducer
-},applyMiddleware(delayMiddleware));
-
+// const store = configureStore({
+//     reducer:rootReducer
+// },applyMiddleware());
 // const store = createStore(todoReducer,applyMiddleware(delayMiddleware))
-
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware()
+            .concat(CustomMiddleWare)
+            .concat(delayMiddleWare)
+            .concat(fetchDataMiddleWare)
+})
 
 //subscribe to state changes
 store.subscribe(() => {
@@ -60,21 +66,11 @@ store.subscribe(() => {
 })
 
 
-// store.dispatch({
-//     type: "todos/todoAdd",
-//     payload:"learn with lex"
-// })
-
-// store.dispatch({
-//     type: "todos/todoLoaded",
-//     payload:[{"title": "learnx"},{"title": " lex"},{"title": "learn "}]
-// })
-
-
 store.dispatch({
     type: "todos/todosAddeds",
-    // payload:[{"title": "learnx"},{"title": " lex"},{"title": "learn "}]
 })
+
+
 
 
 
