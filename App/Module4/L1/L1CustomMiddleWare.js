@@ -26,14 +26,19 @@ const delayMiddleWare = (store) => (next) => (action) => {
     next(action);
 }
 
-const fetchDataMiddleWare = (store) => (next) => async (action) =>{
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
-    const todos = await response.json();
-
-    if (ActionSheetIOS.type == "") { 
+const fetchDataMiddleWare = (store) => (next) => async (action) => {
+    console.warn("fetchDataMiddleWare-------------")
+        console.log("store: ", store)
+        console.log("next: ", next)
+        console.log("action: ", action)
+    if (action.type == "todos/fetchTodos") {
+        console.log("action.type: ", action.type)
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
+        const todos = await response.json();
         store.dispatch({
             type: "todos/todoLoaded",
-    
+            payload: todos
+
         })
     }
     next(action);
@@ -41,5 +46,5 @@ const fetchDataMiddleWare = (store) => (next) => async (action) =>{
 }
 
 export {
-    CustomMiddleWare, delayMiddleWare ,fetchDataMiddleWare
+    CustomMiddleWare, delayMiddleWare, fetchDataMiddleWare
 }

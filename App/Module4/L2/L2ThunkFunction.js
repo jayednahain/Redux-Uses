@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
-
-import { configureStore ,combineReducers, createStore, applyMiddleware } from '@reduxjs/toolkit'
-import { CustomMiddleWare, delayMiddleWare, fetchDataMiddleWare } from './L1CustomMiddleWare'
+import React from 'react';
+import { fetchDataMiddleWare } from './CustomMiddleWare';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
 const initialState = {
     todos: []
@@ -47,16 +46,10 @@ const userReducer = (state = { user: {} }, action) => {
 //store ------------------------------------------------------------------------------
 const rootReducer = combineReducers({todos: todoReducer,users: userReducer})
 
-// const store = configureStore({
-//     reducer:rootReducer
-// },applyMiddleware());
-// const store = createStore(todoReducer,applyMiddleware(delayMiddleware))
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
-            .concat(CustomMiddleWare)
-            .concat(delayMiddleWare)
             .concat(fetchDataMiddleWare)
 })
 
@@ -67,18 +60,13 @@ store.subscribe(() => {
 
 
 store.dispatch({
-    type: "todos/todosAddeds",
+    type: "todos/fetchTodos",
 })
 
-
-
-
-
-
-export default function L1IntroAsync() {
+export default function L2ThunkFunction() {
     return (
         <View>
-            <Text>L1IntroAsync</Text>
+            <Text>L2ThunkFunction</Text>
         </View>
     )
 }
