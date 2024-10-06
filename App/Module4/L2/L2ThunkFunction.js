@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react';
-import { fetchDataMiddleWare } from './CustomMiddleWare';
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { fetchTodos } from './ServiceFunctions';
+import { dataFetchMiddleWare } from './CustomMiddleWare';
 
 const initialState = {
     todos: []
@@ -44,13 +45,17 @@ const userReducer = (state = { user: {} }, action) => {
 
 
 //store ------------------------------------------------------------------------------
-const rootReducer = combineReducers({todos: todoReducer,users: userReducer})
+const rootReducer = combineReducers(
+    {
+        todos: todoReducer,
+        users: userReducer
+    })
 
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
-            .concat(fetchDataMiddleWare)
+            .concat(dataFetchMiddleWare)
 })
 
 //subscribe to state changes
@@ -59,9 +64,7 @@ store.subscribe(() => {
 })
 
 
-store.dispatch({
-    type: "todos/fetchTodos",
-})
+store.dispatch(fetchTodos)
 
 export default function L2ThunkFunction() {
     return (
