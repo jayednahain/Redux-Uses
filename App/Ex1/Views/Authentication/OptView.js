@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-
-
-export default function AuthInfo() {
+export default function OptView() {
     return (
-        <View></View>
-  )
+        <View>
+            <Text>OptView</Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({})
